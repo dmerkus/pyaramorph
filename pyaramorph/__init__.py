@@ -47,19 +47,25 @@ class Analyzer:
         tokens = _tokenize(text.strip())
 
         for token in tokens:
+            result = {}
+
             token = _clean_arabic(token)
             buckword = buckwalter.uni2buck(token)
             analyses = self.analyze_word(buckword)
+
             if len(analyses) > 0:
-                analyses.insert(0, "analysis for: %s %s" % (token, buckword))
-                results.append(analyses)
+                result["token"] = token
+                result["buck"] = buckword
+                result["analyses"] = analyses
+
+                results.append(result)
 
         return results
 
     def analyze_word(self, word):
         """Return all possible analyses for the given word"""
         analyses = []
-        count = 0
+
         segments = self._build_segments(word)
 
         for prefix, stem, suffix in segments:
@@ -98,15 +104,25 @@ class Analyzer:
                     # Ok, it passed!
                     buckvoc = "%s%s%s" % (voc_a, voc_b, voc_c)
                     univoc = buckwalter.buck2uni(buckvoc)
-                    if gloss_a == '': gloss_a = '___'
-                    if gloss_c == '': gloss_c = '___'
+
+                    if gloss_a == '': gloss_a = None
+                    if gloss_c == '': gloss_c = None
+
+                    pos = "%s%s%s" % (pos_a, pos_b, pos_c)
+                    pos = pos.split('/')
+
                     analyses.append(
-                        "    solution: (%s %s) [%s]\n"
-                        "         pos: %s%s%s\n"
-                        "       gloss: %s + %s + %s\n" % \
-                        (univoc, buckvoc, lemmaID, \
-                        pos_a, pos_b, pos_c, \
-                        gloss_a, gloss_b, gloss_c))
+                        {"solution":
+                             {"univoc": univoc,
+                              "buckvoc": buckvoc,
+                              "lemmaID": lemmaID},
+                         "pos": pos,
+                         "gloss":
+                             {"a": gloss_a,
+                              "b": gloss_b,
+                              "c": gloss_c}
+                         }
+                    )
 
         return analyses
 
