@@ -11,6 +11,7 @@ pyaramorph/dictSuffixes
 pyaramorph/tableAB
 pyaramorph/tableAC
 pyaramorph/tableBC
+pyaramorph/test_aramorph.py
 pyaramorph/test_buckwalter.py
 pyaramorph/test_util.py
 pyaramorph/util.py
