@@ -54,6 +54,11 @@ BUCK_UNI = {
     "~" : u"\u0651",
     "o" : u"\u0652",
     "`" : u"\u0670",
+    "{" : u"\u0671",
+    "P" : u"\u067e",
+    "J" : u"\u0686",
+    "V" : u"\u06a4",
+    "G" : u"\u06af"
 }
 """ Maps ascii characters to the unicode characters """
 
